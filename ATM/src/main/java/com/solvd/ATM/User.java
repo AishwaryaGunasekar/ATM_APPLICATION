@@ -98,4 +98,35 @@ public class User {
 		}
 
 	}
+	public void changePin(String oldPin, String newPin) {
+		if (validatePin(oldPin)) {
+			try {
+				MessageDigest md = MessageDigest.getInstance("MD5");
+				this.pinHash = md.digest(newPin.getBytes());
+				LOGGER.info("Pin changed successfully.");
+			} catch (NoSuchAlgorithmException e) {
+				LOGGER.error("Error: Unable to change pin. Caught NoSuchAlgorithmException");
+				e.printStackTrace();
+			}
+		} else {
+			LOGGER.error("Invalid old pin. Pin not changed.");
+		}
+	}
+	public void setPin(String newPin) {
+		try {
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			this.pinHash = md.digest(newPin.getBytes());
+			LOGGER.info("Pin changed successfully.");
+		} catch (NoSuchAlgorithmException e) {
+			LOGGER.error("Error: Unable to change pin. Caught NoSuchAlgorithmException");
+			e.printStackTrace();
+		}
+	}
+
+	public void balanceEnquiry() {
+			LOGGER.info("Account Balance Enquiry");
+			for (Account account : accounts) {
+				LOGGER.info(account.getSummaryLine());
+			}
+		}
 }
