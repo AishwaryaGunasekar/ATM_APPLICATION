@@ -5,6 +5,9 @@ import java.util.Scanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/* This class of
+ * for bank's particular ATM
+ */
 public class ATM {
 
 	public static final Logger LOGGER = LogManager.getLogger(ATM.class);
@@ -44,7 +47,7 @@ public class ATM {
 
 		// prompt the user for user ID/pin combo until a correct one is reached
 		do {
-			 LOGGER.info(String.format("\n\nWelcome to %s\n\n", theBank.getName()));
+			LOGGER.info(String.format("\n\nWelcome to %s\n\n", theBank.getName()));
 			LOGGER.info("Enter the UserID:");
 			userID = sc.nextLine();
 			LOGGER.info("Enter pin:");
@@ -87,46 +90,47 @@ public class ATM {
 
 		} while (choice < 1 || choice > 7);
 		switch (choice) {
-			case 1:
-				ATM.showTransactionHistory(theUser, sc);
-				break;
-			case 2:
-				ATM.withdrawFunds(theUser, sc);
-				break;
-			case 3:
-				ATM.depositFunds(theUser, sc);
-				break;
-			case 4:
-				ATM.transferFunds(theUser, sc);
-				break;
-			case 5:
-				ATM.balanceEnquiry(theUser,sc);
-				break;
-			case 6:
-				ATM.changePin(theUser, sc);
-				break;
-			case 7: 
-				ATM.payBill(theUser,sc);
-				break;
-				
-			case 8:
-	                System.out.println("Thank you for using the ATM. Goodbye!");
-	                break;
-		    default:
-                System.out.println("Invalid choice. Please try again.");
-                break;
-		   
-           
+		case 1:
+			ATM.showTransactionHistory(theUser, sc);
+			break;
+		case 2:
+			ATM.withdrawFunds(theUser, sc);
+			break;
+		case 3:
+			ATM.depositFunds(theUser, sc);
+			break;
+		case 4:
+			ATM.transferFunds(theUser, sc);
+			break;
+		case 5:
+			ATM.balanceEnquiry(theUser, sc);
+			break;
+		case 6:
+			ATM.changePin(theUser, sc);
+			break;
+		case 7:
+			ATM.payBill(theUser, sc);
+			break;
+
+		case 8:
+			System.out.println("Thank you for using the ATM. Goodbye!");
+			break;
+		default:
+			System.out.println("Invalid choice. Please try again.");
+			break;
+
 		}
 		// redisplay the menu until the user wants to quit
 		if (choice != 7) {
 			ATM.printUserMenu(theUser, sc);
 		}
 	}
+
 	public static void balanceEnquiry(User theUser, Scanner sc) {
 		LOGGER.info("Account Balance Enquiry");
 		theUser.printAccountsSummary();
 	}
+
 	public static void changePin(User theUser, Scanner sc) {
 		LOGGER.info("Change Pin");
 		sc.nextLine(); // Consume the newline character
@@ -151,7 +155,7 @@ public class ATM {
 					theUser.numAccounts()));
 			theAcct = sc.nextInt() - 1;
 			if (theAcct < 0 || theAcct >= theUser.numAccounts())
-				
+
 			{
 				LOGGER.error("Invalid account.Please try again. ");
 			}
@@ -220,7 +224,8 @@ public class ATM {
 		String memo;
 		// get the account to withdraw from
 		do {
-			LOGGER.info(String.format("Enter the number (1-%d) of the account:\n" + "to withdraw from:", theUser.numAccounts()));
+			LOGGER.info(String.format("Enter the number (1-%d) of the account:\n" + "to withdraw from:",
+					theUser.numAccounts()));
 			fromAcct = sc.nextInt() - 1;
 			if (fromAcct < 0 || fromAcct >= theUser.numAccounts()) {
 				LOGGER.error("Invalid account.Please try again.");
@@ -259,7 +264,8 @@ public class ATM {
 		String memo;
 		// get the account to deposit from
 		do {
-			LOGGER.info(String.format("Enter the number (1-%d) of the account:\n" + "to deposit in:", theUser.numAccounts()));
+			LOGGER.info(String.format("Enter the number (1-%d) of the account:\n" + "to deposit in:",
+					theUser.numAccounts()));
 			toAcct = sc.nextInt() - 1;
 			if (toAcct < 0 || toAcct >= theUser.numAccounts()) {
 				LOGGER.error("Invalid account.Please try again.");
@@ -286,42 +292,43 @@ public class ATM {
 		// do the deposit
 		theUser.addAcctTransaction(toAcct, amount, memo);
 	}
-	
-	  private static void payBill(User theUser,Scanner sc) {
-			// inits
-			int fromAcct;
-			double amount;
-			double acctBal;
-			String memo;
-			// get the account to paybill from
-			do {
-				LOGGER.info(String.format("Enter the number (1-%d) of the account:\n" + "to pay from:", theUser.numAccounts()));
-				fromAcct = sc.nextInt() - 1;
-				if (fromAcct < 0 || fromAcct >= theUser.numAccounts()) {
-					LOGGER.error("Invalid account.Please try again.");
-				}
 
-			} while (fromAcct < 0 || fromAcct >= theUser.numAccounts());
-			acctBal = theUser.getAcctBalance(fromAcct);
+	private static void payBill(User theUser, Scanner sc) {
+		// inits
+		int fromAcct;
+		double amount;
+		double acctBal;
+		String memo;
+		// get the account to paybill from
+		do {
+			LOGGER.info(
+					String.format("Enter the number (1-%d) of the account:\n" + "to pay from:", theUser.numAccounts()));
+			fromAcct = sc.nextInt() - 1;
+			if (fromAcct < 0 || fromAcct >= theUser.numAccounts()) {
+				LOGGER.error("Invalid account.Please try again.");
+			}
 
-			// get the amount to paybill 
-			do {
-				LOGGER.info(String.format("Enter the amount to pay (max $%.02f): $", acctBal));
-				amount = sc.nextDouble();
-				if (amount < 0) {
-					LOGGER.info("Amount must be greater than zero.");
+		} while (fromAcct < 0 || fromAcct >= theUser.numAccounts());
+		acctBal = theUser.getAcctBalance(fromAcct);
 
-				} else if (amount > acctBal) {
-					LOGGER.info(String.format("Amount must not be greater than\n" + "balance of $%.02f.\n", acctBal));
-				}
+		// get the amount to paybill
+		do {
+			LOGGER.info(String.format("Enter the amount to pay (max $%.02f): $", acctBal));
+			amount = sc.nextDouble();
+			if (amount < 0) {
+				LOGGER.info("Amount must be greater than zero.");
 
-			} while (amount < 0 || amount > acctBal);
+			} else if (amount > acctBal) {
+				LOGGER.info(String.format("Amount must not be greater than\n" + "balance of $%.02f.\n", acctBal));
+			}
 
-			sc.nextLine();
-			LOGGER.info("Enter the memo:");
-			memo = sc.nextLine();
+		} while (amount < 0 || amount > acctBal);
 
-			// do the paybill
-			theUser.addAcctTransaction(fromAcct, -1 * amount, memo);
-	    }
+		sc.nextLine();
+		LOGGER.info("Enter the memo:");
+		memo = sc.nextLine();
+
+		// do the paybill
+		theUser.addAcctTransaction(fromAcct, -1 * amount, memo);
+	}
 }

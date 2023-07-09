@@ -3,6 +3,9 @@ package com.solvd.ATM;
 import java.util.ArrayList;
 import java.util.Random;
 
+
+/* This class is for the Bank */
+
 public class Bank {
 
 	private String name;

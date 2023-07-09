@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/* This class is for each account*/
+
 public class Account {
 
 	public static final Logger LOGGER = LogManager.getLogger(ATM.class);

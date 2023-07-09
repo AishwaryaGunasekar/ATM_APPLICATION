@@ -3,9 +3,11 @@ package com.solvd.ATM;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import java.math.BigInteger;
+
+/* This class is for each user or account holder */
 
 public class User {
 
@@ -28,6 +30,7 @@ public class User {
 		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");
 			this.pinHash = md.digest(pin.getBytes());
+
 		} catch (NoSuchAlgorithmException e) {
 			LOGGER.error("error,caught NoSuchoAlgorithmException");
 			e.printStackTrace();
@@ -35,8 +38,11 @@ public class User {
 		}
 		this.uuid = thebank.getNewUserUUID();
 		this.accounts = new ArrayList<Account>();
+		
+		  // Convert the pinHash to a hexadecimal string
+        String pinHashString = new BigInteger(1, pinHash).toString(16);
 
-		LOGGER.info(String.format("New user %s,%s with ID %s is created.\n ", lastName, firstName, this.uuid));
+		LOGGER.info(String.format("New user %s,%s with ID %s is created.\n ", lastName, firstName, this.uuid,pinHashString));
 	}
 
 	public void addAccount(Account anAcct) {
@@ -98,6 +104,7 @@ public class User {
 		}
 
 	}
+
 	public void changePin(String oldPin, String newPin) {
 		if (validatePin(oldPin)) {
 			try {
@@ -112,6 +119,7 @@ public class User {
 			LOGGER.error("Invalid old pin. Pin not changed.");
 		}
 	}
+
 	public void setPin(String newPin) {
 		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");
@@ -124,9 +132,9 @@ public class User {
 	}
 
 	public void balanceEnquiry() {
-			LOGGER.info("Account Balance Enquiry");
-			for (Account account : accounts) {
-				LOGGER.info(account.getSummaryLine());
-			}
+		LOGGER.info("Account Balance Enquiry");
+		for (Account account : accounts) {
+			LOGGER.info(account.getSummaryLine());
 		}
+	}
 }
