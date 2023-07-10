@@ -293,7 +293,7 @@ public class ATM {
 		theUser.addAcctTransaction(toAcct, amount, memo);
 	}
 
-	private static void payBill(User theUser, Scanner sc) {
+	public static void payBill(User theUser, Scanner sc) {
 		// inits
 		int fromAcct;
 		double amount;
